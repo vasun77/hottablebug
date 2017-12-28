@@ -16,18 +16,19 @@
       #toggle {
         margin: 10px 0;
       }
-      .someOtherTable {
-        margin: 20px;
-      }
-
       .scaled {
-        transform: translateX(1px);
+        transform: translate3d(20px, 0, 0);
       }
-
       .sen {
         background: red;
+        top: 0 !important;
+        transform: translate3d(-40px, 0, 0);
       }
-
+      .manualColumnResizerGuide.active {
+        background: blue;
+        top: 0 !important;
+        transform: translate3d(-40px, 0, 0);
+      }
       #status.on::after {
         content: "scale is active; column resize broken.";
       }
@@ -37,7 +38,6 @@
       }
 
       .container {
-        padding: 20px 0;
         transition: transform 500ms ease-in-out;
       }
     </style>
@@ -91,6 +91,7 @@ document.getElementById('toggle').addEventListener('click', function() {
   console.log(document.querySelector('.manualColumnResizer').style.top, document.querySelector('.manualColumnResizer').style.top);
   document.querySelector('.container').classList.toggle('scaled');
   document.querySelector('.manualColumnResizer').classList.toggle('sen');
+  //document.querySelector('.manualColumnResizerGuide').classList.toggle('cen');
   var el = document.getElementById('status');
   var classes = el.className.match(/\S+/g) || [];
   index = classes.indexOf('off');
