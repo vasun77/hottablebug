@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Handsontable transform bug</title>
+    <link rel="stylesheet" href="./Handsontable-pro-1.15.0/dist/handsontable.full.css" />
+    <style>
+      body {
+        background-color: white;
+        margin: 20px;
+      }
+
+      h2 {
+        margin: 20px 0;
+      }
+
+      #toggle {
+        margin: 10px 0;
+      }
+      .someOtherTable {
+        margin: 20px;
+      }
+
+      .scaled {
+        transform: translateX(1px);
+      }
+
+      .sen {
+        background: red;
+      }
+
+      #status.on::after {
+        content: "scale is active; column resize broken.";
+      }
+
+      #status.off::after {
+        content: "scale is removed; column resize works.";
+      }
+
+      .container {
+        padding: 20px 0;
+        transition: transform 500ms ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Handsontable transform/translate bug</h2>
+
+    <button id="toggle">
+      toggle scale
+    </button>
+
+    <div id="status" class="status off">
+
+    </div>
+
+    <div class="container">
+      <div id="table">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log("coming here");
+        var myData = [
+    ["", "Kia", "Nissan", "Toyota", "Honda"],
+    ["2008", 10, 11, 12, 13],
+    ["2009", 20, 11, 14, 13],
+    ["2010", 30, 15, 12, 13]
+    ];
+
+    var container = document.getElementById("table");
+    var hot = new Handsontable(container,{
+    data: myData,
+    startRows: 5,
+    startCols: 5,
+    minSpareCols: 1,
+    //always keep at least 1 spare row at the right
+    minSpareRows: 1,
+    //always keep at least 1 spare row at the bottom,
+    rowHeaders: true,
+    colHeaders: true,
+    contextMenu: true,
+    stretchH: 'all',
+    manualColumnResize: true
+});
+document.getElementById('toggle').addEventListener('click', function() {
+  console.log('click on status')
+  /*
+  document.querySelector('.status').classList.toggle('on off');
+  */
+  console.log(document.querySelector('.manualColumnResizer').style.top, document.querySelector('.manualColumnResizer').style.top);
+  document.querySelector('.container').classList.toggle('scaled');
+  document.querySelector('.manualColumnResizer').classList.toggle('sen');
+  var el = document.getElementById('status');
+  var classes = el.className.match(/\S+/g) || [];
+  index = classes.indexOf('off');
+  if (index >= 0)  {
+    classes.splice(index, 1);
+    classes.push('on');
+  } else {
+    index = classes.indexOf('on');
+    if (index >= 0) classes.splice(index, 1);
+    classes.push('off');
+  }
+  el.className = classes.join(' ');
+  //hot.render();
+})
+/*
+$("#toggle").on('click', function() {
+	$("#status").toggleClass("on off");
+	$("#container").toggleClass("scaled");
+});
+*/
+});
+    </script>
+    <script type="text/javascript" src="./Handsontable-pro-1.15.0/dist/handsontable.full.js"></script>
+  </body>
+</html>
